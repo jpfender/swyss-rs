@@ -3,6 +3,7 @@ use std::cell::RefCell;
 use std::fs;
 use std::io;
 use std::io::Write;
+use std::path::Path;
 use std::process::exit;
 use std::process::Command;
 use std::rc::Rc;
@@ -90,11 +91,11 @@ pub fn main() -> io::Result<()> {
 
             let uuid = pair.0;
 
-            let home = String::from(&pair.1);
-            let away = String::from(&pair.2);
+            let home_file = String::from(&pair.1);
+            let away_file = String::from(&pair.2);
 
-            let home_file = String::from(&home);
-            let away_file = String::from(&away);
+            let home = String::from(Path::new(&home_file).file_stem().unwrap().to_str().unwrap());
+            let away = String::from(Path::new(&away_file).file_stem().unwrap().to_str().unwrap());
 
             thread::spawn(|| {
                 Command::new("feh")
