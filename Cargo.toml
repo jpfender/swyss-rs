@@ -1,0 +1,14 @@
+[package]
+name = "swyss"
+version = "0.1.0"
+authors = ["Jakob Pfender <jakob.pfender@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = "3.0.0-beta.1"
+rand = "0.7"
+range_check = "0.2"
+regex = "1"
+uuid = { version = "0.8", features = ["v4"] }
