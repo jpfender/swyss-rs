@@ -180,7 +180,7 @@ pub fn main() -> io::Result<()> {
     for p in &players {
         let p = p.borrow();
         println!(
-            "{}.\t{}\t{}\t{:.2}\t{:.2}\t{:.2}",
+            "{}.\t{}\t\t{}\t{:.2}\t{:.2}\t{:.2}",
             rank,
             p.name,
             p.match_points,
