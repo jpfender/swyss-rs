@@ -6,6 +6,7 @@ use rand::thread_rng;
 use range_check::{Check, OutOfRangeError};
 use std::cmp::Ordering;
 use std::collections::HashMap;
+use std::fmt;
 use std::rc::Rc;
 use uuid::Uuid;
 
@@ -309,6 +310,25 @@ impl Pairing {
     }
 }
 
+/// Recording the result of a pairing can fail for one of two reasons: Either the pairing does not
+/// exist, or the supplied results are invalid
+#[derive(Debug)]
+pub enum PairingResultError {
+    NotFound(uuid::Uuid),
+    OutOfRange(u8),
+}
+
+impl std::error::Error for PairingResultError {}
+
+impl fmt::Display for PairingResultError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            PairingResultError::NotFound(_) => write!(f, "Pairing not found!"),
+            PairingResultError::OutOfRange(_) => write!(f, "Score(s) out of range!"),
+        }
+    }
+}
+
 /// Manages the whole tournament. Holds players and their ranking and constructs pairings on demand
 pub struct Tournament {
     pub rounds: u32,
@@ -317,13 +337,6 @@ pub struct Tournament {
     pub pairings: HashMap<uuid::Uuid, Pairing>,
     pub needs_bye: bool,
     rng: ThreadRng,
-}
-
-/// Recording the result of a pairing can fail for one of two reasons: Either the pairing does not
-/// exist, or the supplied results are invalid
-pub enum PairingResultError {
-    NotFound(uuid::Uuid),
-    OutOfRange(u8),
 }
 
 impl Tournament {

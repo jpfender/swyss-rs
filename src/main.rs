@@ -149,17 +149,7 @@ pub fn main() -> io::Result<()> {
                 // not set `read` to `false`, resulting in another round
                 match tourn.end_match(uuid, home_score, away_score, drawn) {
                     Ok(_) => read = false,
-                    Err(e) => match e {
-                        PairingResultError::NotFound(_) => {
-                            // This should never happen
-                            eprintln!("Pairing not found!");
-                            exit(1);
-                        }
-                        PairingResultError::OutOfRange(_) => {
-                            eprintln!("Score(s) out of range!");
-                            continue;
-                        }
-                    },
+                    Err(e) => eprintln!("Error recording result: {}", e),
                 };
             }
 
