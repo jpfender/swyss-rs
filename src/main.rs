@@ -1,4 +1,7 @@
+#[macro_use]
+extern crate prettytable;
 use clap::Clap;
+use prettytable::Table;
 use std::cell::RefCell;
 use std::fs;
 use std::io;
@@ -164,22 +167,25 @@ pub fn main() -> io::Result<()> {
 
     println!("\n=== RESULTS ===\n");
 
-    println!("Rank\tName\t\tMP\tOMWP\tGWP\tOGWP");
-    println!("----\t----\t\t--\t----\t---\t----");
+    let mut table = Table::new();
+
+    table.add_row(row!["Rank", "Name", "MP", "OMWP", "GWP", "OGWP"]);
+
     let mut rank = 1;
     for p in &players {
         let p = p.borrow();
-        println!(
-            "{}.\t{}\t\t{}\t{:.2}\t{:.2}\t{:.2}",
+        table.add_row(row![
             rank,
             p.name,
             p.match_points,
             p.opponents_match_win_percentage(),
             p.game_win_percentage(),
-            p.opponents_game_win_percentage()
-        );
+            p.opponents_game_win_percentage(),
+        ]);
         rank += 1;
     }
+
+    table.printstd();
 
     Ok(())
 }
