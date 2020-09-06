@@ -178,9 +178,9 @@ pub fn main() -> io::Result<()> {
             rank,
             p.name,
             p.match_points,
-            p.opponents_match_win_percentage(),
-            p.game_win_percentage(),
-            p.opponents_game_win_percentage(),
+            (p.opponents_match_win_percentage() * 100.0).round() / 100.0,
+            (p.game_win_percentage() * 100.0).round() / 100.0,
+            (p.opponents_game_win_percentage() * 100.0).round() / 100.0,
         ]);
         rank += 1;
     }
