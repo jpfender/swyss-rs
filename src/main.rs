@@ -100,29 +100,31 @@ pub fn main() -> io::Result<()> {
             let home = String::from(Path::new(&home_file).file_stem().unwrap().to_str().unwrap());
             let away = String::from(Path::new(&away_file).file_stem().unwrap().to_str().unwrap());
 
-            thread::spawn(|| {
-                Command::new("feh")
-                    .arg("-g")
-                    .arg("960x1080+0+0")
-                    .arg(home_file)
-                    .arg("--scale-down")
-                    .arg("--title")
-                    .arg("1")
-                    .output()
-                    .expect("failed to execute process");
-            });
+            if img {
+                thread::spawn(|| {
+                    Command::new("feh")
+                        .arg("-g")
+                        .arg("960x1080+0+0")
+                        .arg(home_file)
+                        .arg("--scale-down")
+                        .arg("--title")
+                        .arg("1")
+                        .output()
+                        .expect("failed to execute process");
+                });
 
-            thread::spawn(|| {
-                Command::new("feh")
-                    .arg("-g")
-                    .arg("960x1080+1920+0")
-                    .arg(away_file)
-                    .arg("--scale-down")
-                    .arg("--title")
-                    .arg("2")
-                    .output()
-                    .expect("failed to execute process");
-            });
+                thread::spawn(|| {
+                    Command::new("feh")
+                        .arg("-g")
+                        .arg("960x1080+1920+0")
+                        .arg(away_file)
+                        .arg("--scale-down")
+                        .arg("--title")
+                        .arg("2")
+                        .output()
+                        .expect("failed to execute process");
+                });
+            }
 
             while read {
                 println!("\nPAIRING:\n[1] {}\n[2] {}\n", home, away);
@@ -156,10 +158,12 @@ pub fn main() -> io::Result<()> {
                 };
             }
 
-            Command::new("killall")
-                .arg("feh")
-                .output()
-                .expect("failed to kill feh");
+            if img {
+                Command::new("killall")
+                    .arg("feh")
+                    .output()
+                    .expect("failed to kill feh");
+            }
         }
     }
 
